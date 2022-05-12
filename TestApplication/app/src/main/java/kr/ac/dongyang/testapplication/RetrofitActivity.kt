@@ -26,6 +26,15 @@ class RetrofitActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_retrofit)
 
+        // id 선언
+        var user = findViewById<TextView>(R.id.user)
+        var address = findViewById<TextView>(R.id.address)
+        var posx = findViewById<TextView>(R.id.posx)
+        var posy = findViewById<TextView>(R.id.posy)
+        var food = findViewById<EditText>(R.id.food)
+        var price = findViewById<EditText>(R.id.price)
+        var taste = findViewById<EditText>(R.id.taste)
+
 
         // Retrofit 객체 초기화
         val retrofit: Retrofit = Retrofit.Builder()
@@ -60,14 +69,26 @@ class RetrofitActivity : AppCompatActivity() {
 
         upload_button.setOnClickListener {
 
-//            postFood.enqueue(object : Callback<FoodDto> {
-//                override fun onFailure(call: Call<FoodDto>?, t:Throwable?) {
-//                    Log.e(TAG, "실패" + t.toString())
-//                }
-//                override fun onResponse(call: Call<FoodDto>, response: Response<FoodDto>) {
-//                    Log.d(TAG, "성공: " + response?.body().toString())
-//                }
-//            })
+            var food1 = food.text.toString()
+            var price1 = price.text.toString()
+            var taste1 = taste.text.toString()
+
+            server.postFood(food1, price1, taste1).enqueue(object : Callback<FoodDto> {
+                override fun onFailure(call: Call<FoodDto>?, t:Throwable?) {
+                    Log.e(TAG, "실패" + t.toString())
+                    var dialog = AlertDialog.Builder(this@RetrofitActivity)
+                    dialog.setTitle("에러")
+                    dialog.setMessage("호출실패~")
+                    dialog.show()
+                }
+                override fun onResponse(call: Call<FoodDto>, response: Response<FoodDto>) {
+                    Log.d(TAG, "성공: " + response?.body().toString())
+                    var dialog = AlertDialog.Builder(this@RetrofitActivity)
+                    dialog.setTitle("성공")
+                    dialog.setMessage("호출완료~")
+                    dialog.show()
+                }
+            })
         }
     }
 
