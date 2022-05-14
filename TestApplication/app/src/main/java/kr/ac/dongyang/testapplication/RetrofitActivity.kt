@@ -82,6 +82,12 @@ class RetrofitActivity : AppCompatActivity() {
                     dialog.show()
                 }
                 override fun onResponse(call: Call<FoodDto>, response: Response<FoodDto>) {
+
+                    val hash = hashMapOf<String, String>()
+                    hash["food"] = food1
+                    hash["price"] = price1
+                    hash["taste"] = taste1
+
                     Log.d(TAG, "성공: " + response?.body().toString())
                     var dialog = AlertDialog.Builder(this@RetrofitActivity)
                     dialog.setTitle("성공")
